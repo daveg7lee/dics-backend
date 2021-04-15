@@ -3,6 +3,7 @@ dotenv.config();
 import { GraphQLServer } from 'graphql-yoga';
 import * as logger from 'morgan';
 import { isAuthenticated } from './middlewares';
+import { authenticateJwt } from './passport';
 import schema from './schema';
 
 const PORT = process.env.PORT || 4000;
@@ -13,6 +14,7 @@ const server = new GraphQLServer({
 });
 
 server.express.use(logger('dev'));
+server.express.use(authenticateJwt);
 
 server.start({ port: PORT }, () =>
   console.log(`server running on port http://localhost:${PORT} `)
