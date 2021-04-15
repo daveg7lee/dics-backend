@@ -1,0 +1,22 @@
+type User {
+  id: ID! @id
+  avatar: String @default(value:"https://res.cloudinary.com/du4erd9mp/image/upload/v1609642686/User%20Profile/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-removebg-preview_1_qenllx.png")
+  scores: [Score!]! @relation(name: "ScoresOfUser", onDelete: CASCADE)
+  username: String! @unique
+  email: String! @unique
+  password: String!
+  bio: String
+  type: String!
+  createdAt: DateTime @createdAt
+}
+
+type Score {
+  id: ID! @id
+  score: Int!
+  article: String! 
+  type: String!
+  user: User @relation(name: "ScoresOfUser")
+  date: String!
+  uploader: String!
+}
+

@@ -1,0 +1,3 @@
+type Query {
+    seeScores:[Score!]!
+}
