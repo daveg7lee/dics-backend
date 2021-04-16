@@ -13,7 +13,7 @@
     "generate": "prisma1 generate",
     "deploy": "prisma1 deploy",
     "prestart": "yarn run generate",
-    "start": "ts-node -F src/server.ts"
+    "start": "ts-node src/server.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.3.6",
