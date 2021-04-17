@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 4000;
 const apollo = new ApolloServer({
   resolvers,
   typeDefs,
+  playground: true,
   introspection: true,
   context: ({ req }) => ({ req, isAuthenticated }),
 });
