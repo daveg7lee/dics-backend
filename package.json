@@ -16,6 +16,7 @@
     "prebuild": "rm -rf dist",
     "build": "tsc",
     "postbuild": "cd src && copy ./api/**/*.graphql ../dist/api",
+    "prestart": "npx prisma migrate save --experimental && npx prisma2 migrate up --experimental",
     "start": "node dist/server"
   },
   "dependencies": {
