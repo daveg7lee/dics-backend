@@ -1,24 +1,32 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-import logger from 'morgan';
-import express from 'express';
-import { ApolloServer } from 'apollo-server-express';
+import { ApolloServer } from 'apollo-server-fastify';
 import { typeDefs, resolvers } from './schema';
 import { getUser } from './utils';
+import fastify from 'fastify';
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT;
 
 const apollo = new ApolloServer({
   resolvers,
   typeDefs,
-  context: async ({ req }) => ({
-    loggedInUser: await getUser(req.headers.token),
+  playground: true,
+  introspection: true,
+  context: async ({
+    request: {
+      headers: { token },
+    },
+  }) => ({
+    loggedInUser: await getUser(token),
   }),
 });
 
-const app: any = express();
-app.use(logger('tiny'));
-apollo.applyMiddleware({ app });
+const app = fastify({
+  logger: {
+    level: 'info',
+  },
+});
+app.register(apollo.createHandler());
 
 app.listen(PORT, () =>
   console.log(`server running on port http://localhost:${PORT}/graphql `)
