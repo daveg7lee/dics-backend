@@ -1,17 +1,14 @@
 import client from '../../client';
+import { protectedResolver } from '../../utils';
 
 export default {
   Query: {
-    me: async (_, __, { request, isAuthenticated }) => {
-      isAuthenticated(request);
-      const {
-        user: { id },
-      } = request;
+    me: protectedResolver(async (_, __, { loggedInUser }) => {
       return await client.user.findUnique({
         where: {
-          id,
+          id: loggedInUser.id,
         },
       });
-    },
+    }),
   },
 };

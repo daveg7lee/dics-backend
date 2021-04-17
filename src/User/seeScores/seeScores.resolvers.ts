@@ -1,15 +1,14 @@
 import client from '../../client';
+import { protectedResolver } from '../../utils';
 
 export default {
   Query: {
-    seeScores: async (_, __, { request, isAuthenticated }) => {
-      isAuthenticated(request);
-      const { user } = request;
+    seeScores: protectedResolver(async (_, __, { loggedInUser }) => {
       return client.score.findMany({
         where: {
-          user,
+          id: loggedInUser.id,
         },
       });
-    },
+    }),
   },
 };

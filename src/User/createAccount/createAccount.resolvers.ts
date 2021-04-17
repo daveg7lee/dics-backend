@@ -3,8 +3,10 @@ import client from '../../client';
 
 export default {
   Mutation: {
-    createAccount: async (_, args): Promise<boolean> => {
-      const { username, email, bio = '', password, type, avatar } = args;
+    createAccount: async (
+      _,
+      { username, email, bio = '', password, type, avatar }
+    ) => {
       const usernameExists = await client.user.findUnique({
         where: {
           username,
