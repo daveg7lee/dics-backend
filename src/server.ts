@@ -1,9 +1,10 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-import { ApolloServer } from 'apollo-server-fastify';
+import logger from 'morgan';
+import express from 'express';
+import { ApolloServer } from 'apollo-server-express';
 import { typeDefs, resolvers } from './schema';
 import { getUser } from './utils';
-import fastify from 'fastify';
 
 const PORT = process.env.PORT;
 
@@ -11,7 +12,7 @@ const apollo = new ApolloServer({
   resolvers,
   typeDefs,
   context: async ({
-    request: {
+    req: {
       headers: { token },
     },
   }) => ({
@@ -19,12 +20,9 @@ const apollo = new ApolloServer({
   }),
 });
 
-const app = fastify({
-  logger: {
-    level: 'info',
-  },
-});
-app.register(apollo.createHandler());
+const app = express();
+app.use(logger('tiny'));
+apollo.applyMiddleware({ app });
 
 app.listen(PORT, () =>
   console.log(`server running on port http://localhost:${PORT}/graphql `)
