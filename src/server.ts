@@ -1,21 +1,26 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
-import { GraphQLServer } from 'graphql-yoga';
-import * as logger from 'morgan';
+import logger from 'morgan';
+import express from 'express';
+import { ApolloServer } from 'apollo-server-express';
 import { isAuthenticated } from './middlewares';
 import { authenticateJwt } from './passport';
-import schema from './schema';
+import { typeDefs, resolvers } from './schema';
 
 const PORT = process.env.PORT || 4000;
 
-const server = new GraphQLServer({
-  schema,
-  context: ({ request }) => ({ request, isAuthenticated }),
+const apollo = new ApolloServer({
+  resolvers,
+  typeDefs,
+  introspection: true,
+  context: ({ req }) => ({ req, isAuthenticated }),
 });
 
-server.express.use(logger('dev'));
-server.express.use(authenticateJwt);
+const app: any = express();
+app.use(logger('tiny'));
+app.use(authenticateJwt);
+apollo.applyMiddleware({ app });
 
-server.start({ port: PORT }, () =>
-  console.log(`server running on port http://localhost:${PORT} `)
+app.listen(PORT, () =>
+  console.log(`server running on port http://localhost:${PORT}/graphql `)
 );

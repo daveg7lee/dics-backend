@@ -1,6 +1,6 @@
-import * as passport from 'passport';
+const passport = require('passport');
 import { Strategy, ExtractJwt } from 'passport-jwt';
-import { prisma } from '../generated/prisma-client';
+import client from './client';
 
 const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -9,7 +9,11 @@ const jwtOptions = {
 
 const verifyUser = async (payload, done) => {
   try {
-    const user = await prisma.user({ id: payload.id });
+    const user = await client.user.findUnique({
+      where: {
+        id: payload.id,
+      },
+    });
     if (user !== null) {
       return done(null, user);
     } else {

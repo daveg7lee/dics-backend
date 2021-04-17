@@ -1,3 +1,0 @@
-type Mutation {
-    UploadScore(score:Int! article: String! username: String! type: String! date: String! uploader:String!):Boolean!
-}
