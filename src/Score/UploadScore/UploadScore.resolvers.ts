@@ -6,7 +6,7 @@ export default {
     UploadScore: protectedResolver(
       async (
         _,
-        { score, article, username, type, date, uploader }
+        { score, article, username, type, date, uploader, detail }
       ): Promise<Boolean> => {
         const user = await client.user.findUnique({ where: { username } });
         if (!user) {
@@ -21,6 +21,7 @@ export default {
               user: { connect: { id: user.id } },
               date,
               uploader,
+              detail,
             },
           });
           return true;

@@ -9,6 +9,7 @@ export default gql`
       type: String!
       date: String!
       uploader: String!
+      detail: String
     ): Boolean!
   }
 `;
