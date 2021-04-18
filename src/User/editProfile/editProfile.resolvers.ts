@@ -1,6 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 import client from '../../client';
-import { protectedResolver } from '../../utils';
+import { deleteInS3, protectedResolver, uploadToS3 } from '../../utils';
 
 export default {
   Mutation: {
@@ -11,6 +11,7 @@ export default {
         { loggedInUser }
       ) => {
         let password;
+        let avatarUrl = null;
         if (email && loggedInUser.email !== email) {
           const emailExists = await client.user.findUnique({
             where: {
@@ -36,13 +37,17 @@ export default {
             );
           }
         }
+        if (avatar) {
+          loggedInUser.avatar && (await deleteInS3(loggedInUser.avatar));
+          avatarUrl = await uploadToS3(avatar, loggedInUser.id, 'avatars');
+        }
         try {
           await client.user.update({
             where: { id: loggedInUser.id },
             data: {
               email,
               bio,
-              avatar,
+              ...(avatarUrl && { avatar: avatarUrl }),
               password,
             },
           });
