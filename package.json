@@ -38,6 +38,7 @@
     "morgan": "^1.10.0"
   },
   "resolutions": {
-    "graphql": "^15.4.0"
+    "graphql": "^15.4.0",
+    "fs-capacitor": "3.0.0"
   }
 }

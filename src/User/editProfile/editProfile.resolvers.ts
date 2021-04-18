@@ -38,8 +38,8 @@ export default {
           }
         }
         if (avatar) {
-          loggedInUser.avatar && (await deleteInS3(loggedInUser.avatar));
           avatarUrl = await uploadToS3(avatar, loggedInUser.id, 'avatars');
+          loggedInUser.avatar && (await deleteInS3(loggedInUser.avatar));
         }
         try {
           await client.user.update({
