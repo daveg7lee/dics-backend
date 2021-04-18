@@ -64,9 +64,11 @@ export const getUser = async (token) => {
 };
 
 export const uploadToS3 = async (file, userId, folderName) => {
-  const { filename, createReadStream } = await file;
+  const { createReadStream } = await file;
   const readStream = createReadStream();
-  const objectName = `${folderName}/${userId}-${Date.now()}-${filename}`;
+  const objectName = `${folderName}/${userId}-${
+    Date.now() * 100000
+  }-${Math.random()}-${Math.random() * 100}`;
   const { Location } = await S3.upload({
     Bucket,
     Key: objectName,
@@ -77,8 +79,9 @@ export const uploadToS3 = async (file, userId, folderName) => {
 };
 
 export const deleteInS3 = async (fileUrl) => {
-  const Key = unescape(
-    fileUrl.replace(`https://${Bucket}.s3.${region}.amazonaws.com/`, '')
+  const Key = fileUrl.replace(
+    `https://${Bucket}.s3.${region}.amazonaws.com/`,
+    ''
   );
   await S3.deleteObject({
     Bucket,
