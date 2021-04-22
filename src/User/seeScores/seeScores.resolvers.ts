@@ -6,7 +6,7 @@ export default {
     seeScores: protectedResolver(async (_, __, { loggedInUser }) => {
       return client.score.findMany({
         where: {
-          id: loggedInUser.id,
+          userId: loggedInUser.id,
         },
       });
     }),

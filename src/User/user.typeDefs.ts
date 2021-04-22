@@ -11,5 +11,6 @@ export default gql`
     type: String!
     createdAt: String!
     scores: [Score]
+    totalScores: Int!
   }
 `;
