@@ -9,7 +9,15 @@ export default {
       scores.map((score) => {
         if (score.type === 'Demerit') {
           total -= score.score;
-        } else {
+        }
+      });
+      return total;
+    },
+    totalMerit: async ({ id }) => {
+      const scores = await client.user.findUnique({ where: { id } }).scores();
+      let total = 0;
+      scores.map((score) => {
+        if (score.type === 'Merit') {
           total += score.score;
         }
       });

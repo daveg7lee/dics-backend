@@ -12,5 +12,6 @@ export default gql`
     createdAt: String!
     scores: [Score]
     totalScores: Int!
+    totalMerit: Int!
   }
 `;
