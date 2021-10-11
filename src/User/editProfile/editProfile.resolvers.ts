@@ -12,16 +12,6 @@ export default {
       ) => {
         let password;
         let avatarUrl = null;
-        if (email && loggedInUser.email !== email) {
-          const emailExists = await client.user.findUnique({
-            where: {
-              email,
-            },
-          });
-          if (emailExists) {
-            throw Error('This Email already have account');
-          }
-        }
         if (oldPassword) {
           const encryptedPassword: string = loggedInUser.password;
           const decorderPassword = jwt.verify(
