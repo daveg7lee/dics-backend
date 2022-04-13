@@ -1,7 +1,8 @@
-import client from '../../client';
+import client from "../../client";
 
 export default {
   Query: {
-    seeUsers: async () => client.user.findMany({}),
+    seeUsers: async () =>
+      client.user.findMany({ orderBy: { username: "asc" } }),
   },
 };
