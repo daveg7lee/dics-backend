@@ -23,7 +23,7 @@ model Score {
   id       String  @id @default(cuid())
   score    Int
   article  String
-  user     User    @relation(name: "ScoresOfUser", fields: [userId], references: [id])
+  user     User    @relation(name: "ScoresOfUser", fields: [userId], references: [id], onDelete: Cascade)
   userId   String
   type     String
   date     String
